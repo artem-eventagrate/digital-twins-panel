@@ -28,7 +28,6 @@ const avatars = [
         id: 7,
     },
 ];
-
 const displays = [
     {
         name: "Display 01",
@@ -96,7 +95,6 @@ openDisplays = () => {
         displayElement.addEventListener("click", proccessClickDisplays);
     });
 };
-
 openAvatars = (seatId) => {
     avatars.forEach((item) => {
         const elem = document.getElementById(item.id);
@@ -141,3 +139,6 @@ openAvatars = (seatId) => {
         avatarElement.addEventListener("click", proccessClick);
     });
 };
+
+
+console.log("Hi!");

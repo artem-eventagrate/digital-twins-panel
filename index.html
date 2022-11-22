@@ -11,72 +11,73 @@
             type="text/css"
     />
     <script src="script.js"></script>
+<!--    <script src="socket.io.min.js"></script>-->
 
     <title>Document</title>
 </head>
 <body>
-<div class="content-container">
-    <div class="change-screen-button-wrapper" onclick="openDisplays()">
-        <span>Change Screen</span>
+    <div class="content-container">
+        <div class="change-screen-button-wrapper" onclick="openDisplays()">
+            <span>Change Screen</span>
+        </div>
+        <div class="selector" id="displaySelect"></div>
+        <div class="avatar-list-wrapper" id="avatarList">
+            <div
+                    class="avatar-button one"
+                    id="seat1"
+                    onclick="openAvatars('seat1')"
+            >
+                <span id="off-text">Off</span>
+            </div>
+            <div
+                    class="avatar-button two"
+                    id="seat2"
+                    onclick="openAvatars('seat2')"
+            >
+                <span id="off-text">Off</span>
+            </div>
+            <div
+                    class="avatar-button three"
+                    id="seat3"
+                    onclick="openAvatars('seat3')"
+            >
+                <span id="off-text">Off</span>
+            </div>
+            <div
+                    class="avatar-button four"
+                    id="seat4"
+                    onclick="openAvatars('seat4')"
+            >
+                <span id="off-text">Off</span>
+            </div>
+            <div
+                    class="avatar-button five"
+                    id="seat5"
+                    onclick="openAvatars('seat5')"
+            >
+                <span id="off-text">Off</span>
+            </div>
+            <div
+                    class="avatar-button six"
+                    id="seat6"
+                    onclick="openAvatars('seat6')"
+            >
+                <span id="off-text">Off</span>
+            </div>
+            <div
+                    class="avatar-button seven"
+                    id="seat7"
+                    onclick="openAvatars('seat7')"
+            >
+                <span id="off-text">Off</span>
+            </div>
+        </div>
+        <div class="selector" id="avatarSelect">
+            <span class="turn-on-span"
+            >On
+              <div class="divider"></div
+              ></span>
+        </div>
     </div>
-    <div class="selector" id="displaySelect"></div>
-    <div class="avatar-list-wrapper" id="avatarList">
-        <div
-                class="avatar-button one"
-                id="seat1"
-                onclick="openAvatars('seat1')"
-        >
-            <span id="off-text">Off</span>
-        </div>
-        <div
-                class="avatar-button two"
-                id="seat2"
-                onclick="openAvatars('seat2')"
-        >
-            <span id="off-text">Off</span>
-        </div>
-        <div
-                class="avatar-button three"
-                id="seat3"
-                onclick="openAvatars('seat3')"
-        >
-            <span id="off-text">Off</span>
-        </div>
-        <div
-                class="avatar-button four"
-                id="seat4"
-                onclick="openAvatars('seat4')"
-        >
-            <span id="off-text">Off</span>
-        </div>
-        <div
-                class="avatar-button five"
-                id="seat5"
-                onclick="openAvatars('seat5')"
-        >
-            <span id="off-text">Off</span>
-        </div>
-        <div
-                class="avatar-button six"
-                id="seat6"
-                onclick="openAvatars('seat6')"
-        >
-            <span id="off-text">Off</span>
-        </div>
-        <div
-                class="avatar-button seven"
-                id="seat7"
-                onclick="openAvatars('seat7')"
-        >
-            <span id="off-text">Off</span>
-        </div>
-    </div>
-    <div class="selector" id="avatarSelect">
-        <span class="turn-on-span"
-        >On
-          <div class="divider"></div
-          ></span>
-    </div>
-</div>
 </body>
 </html>
