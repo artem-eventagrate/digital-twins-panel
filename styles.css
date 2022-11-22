@@ -1,0 +1,100 @@
+@import url("https://fonts.cdnfonts.com/css/futura-pt");
+
+body {
+    background: url("/assets/background.png") no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+}
+
+.content-container {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.change-screen-button-wrapper {
+    width: 600px;
+    text-align: center;
+    background: #d9d9d9;
+    padding: 12px 0 12px 0;
+    font-family: "Futura PT", sans-serif;
+    font-weight: 500;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.avatar-list-wrapper {
+    width: 600px;
+    height: 95px;
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    margin-top: 64px;
+}
+
+.avatar-button {
+    background: #727272;
+    width: 90px;
+    height: 90px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: "Futura PT", sans-serif;
+    font-weight: 600;
+}
+
+.avatar-button-on {
+    background-color: #d9d9d9;
+}
+
+.selector {
+    display: none;
+    flex-direction: column;
+    padding: 15px 19px;
+    transform: translate(200px, 141px);
+    background: #202020;
+    position: absolute;
+    width: 160px;
+    height: 360px;
+    font-family: "Futura PT", sans-serif;
+    color: #fff;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 22px;
+}
+
+.selector-name {
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.selector-name:hover {
+    color: #efa220;
+}
+
+.divider {
+    height: 2px;
+    background: white;
+    width: 140px;
+    margin: 8px 0 8px 0;
+}
+
+.turn-on-span {
+    text-align: center;
+    color: #00ff8a;
+}
+
+#avatarSelect {
+    height: 400px;
+    transform: translate(-200px, 320px);
+}
+
+#avatarSelect.divider:nth-child(2) {
+    display: none;
+}
