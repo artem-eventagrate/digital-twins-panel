@@ -141,4 +141,5 @@ openAvatars = (seatId) => {
 };
 
 
-console.log("Hi!");
+let socket = io();
+socket.connect("https://brassy-silky-taleggio.glitch.me");
