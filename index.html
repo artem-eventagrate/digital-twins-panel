@@ -10,6 +10,7 @@
             rel="stylesheet"
             type="text/css"
     />
+    <script src="jquery.min.js"></script>
     <script src="socket.io.min.js"></script>
     <script src="script.js"></script>
 
@@ -17,67 +18,251 @@
 </head>
 <body>
     <div class="content-container">
-        <div class="change-screen-button-wrapper" onclick="openDisplays()">
+        <div class="change-screen-button-wrapper">
             <span>Change Screen</span>
         </div>
         <div class="selector" id="displaySelect"></div>
         <div class="avatar-list-wrapper" id="avatarList">
-            <div
-                    class="avatar-button one"
-                    id="seat1"
-                    onclick="openAvatars('seat1')"
-            >
-                <span id="off-text">Off</span>
+            <div class="avatar-button one" id="seat01">
+                <span>Off</span>
             </div>
-            <div
-                    class="avatar-button two"
-                    id="seat2"
-                    onclick="openAvatars('seat2')"
-            >
-                <span id="off-text">Off</span>
+            <div class="avatar-button two" id="seat02">
+                <span>Off</span>
             </div>
-            <div
-                    class="avatar-button three"
-                    id="seat3"
-                    onclick="openAvatars('seat3')"
-            >
-                <span id="off-text">Off</span>
+            <div class="avatar-button three" id="seat03">
+                <span>Off</span>
             </div>
-            <div
-                    class="avatar-button four"
-                    id="seat4"
-                    onclick="openAvatars('seat4')"
-            >
-                <span id="off-text">Off</span>
+            <div class="avatar-button four" id="seatCenter">
+                <span>Off</span>
             </div>
-            <div
-                    class="avatar-button five"
-                    id="seat5"
-                    onclick="openAvatars('seat5')"
-            >
-                <span id="off-text">Off</span>
+            <div class="avatar-button five" id="seat04">
+                <span>Off</span>
             </div>
-            <div
-                    class="avatar-button six"
-                    id="seat6"
-                    onclick="openAvatars('seat6')"
-            >
-                <span id="off-text">Off</span>
+            <div class="avatar-button six" id="seat05">
+                <span>Off</span>
             </div>
-            <div
-                    class="avatar-button seven"
-                    id="seat7"
-                    onclick="openAvatars('seat7')"
-            >
-                <span id="off-text">Off</span>
+            <div class="avatar-button seven" id="seat06">
+                <span>Off</span>
             </div>
         </div>
         <div class="selector" id="avatarSelect">
-            <span class="turn-on-span"
-            >On
-              <div class="divider"></div
-              ></span>
+            <span class="turn-on-span">On
+              <div class="divider"></div>
+            </span>
         </div>
     </div>
+    <script>
+        jQuery(document).ready(function () {
+            const socket = io.connect("http://brassy-silky-taleggio.glitch.me");
+            const avatars = [
+                {
+                    name: "Avatar 01",
+                    id: 1,
+                },
+                {
+                    name: "Avatar 02",
+                    id: 2,
+                },
+                {
+                    name: "Avatar 03",
+                    id: 3,
+                },
+                {
+                    name: "Avatar 04",
+                    id: 4,
+                },
+                {
+                    name: "Avatar 05",
+                    id: 5,
+                },
+                {
+                    name: "Avatar 06",
+                    id: 6,
+                },
+                {
+                    name: "Avatar 07",
+                    id: 7,
+                },
+            ];
+            const displays = [
+                {
+                    name: "Display 01",
+                    id: 1,
+                },
+                {
+                    name: "Display 02",
+                    id: 2,
+                },
+                {
+                    name: "Display 03",
+                    id: 3,
+                },
+                {
+                    name: "Display 04",
+                    id: 4,
+                },
+                {
+                    name: "Display 05",
+                    id: 5,
+                },
+                {
+                    name: "Display 06",
+                    id: 6,
+                },
+                {
+                    name: "Display 07",
+                    id: 7,
+                },
+            ];
+            const stageParameters = {
+                seatCenter: {
+                    id: 0,
+                    avatarEnabled: false,
+                    chairEnabled: true
+                },
+                seat01: {
+                    id: 1,
+                    avatarEnabled: false,
+                    chairEnabled: true
+                },
+                seat02: {
+                    id: 2,
+                    avatarEnabled: false,
+                    chairEnabled: true
+                },
+                seat03: {
+                    id: 3,
+                    avatarEnabled: false,
+                    chairEnabled: true
+                },
+                seat04: {
+                    id: 4,
+                    avatarEnabled: false,
+                    chairEnabled: true
+                },
+                seat05: {
+                    id: 5,
+                    avatarEnabled: false,
+                    chairEnabled: true
+                },
+                seat06: {
+                    id: 6,
+                    avatarEnabled: false,
+                    chairEnabled: true
+                },
+                screen: {
+                    url: ""
+                }
+            };
+
+            jQuery('.change-screen-button-wrapper').on('click', function () {
+                console.log("Click screen change");
+                openDisplays();
+            });
+
+            for (let element of $('.avatar-button')) {
+                let avatarButton = jQuery(element);
+
+                if (stageParameters[avatarButton.attr('id')].chairEnabled) {
+                    avatarButton.addClass("avatar-button-on")
+                }
+
+                jQuery(element).on('click', function() {
+                    let seatId = jQuery(this).attr('id');
+
+                    if (stageParameters[seatId].chairEnabled) {
+                        stageParameters[seatId].chairEnabled = false;
+                        jQuery(this).removeClass("avatar-button-on")
+                    } else {
+                        stageParameters[seatId].chairEnabled = true;
+                        jQuery(this).addClass("avatar-button-on")
+                    }
+
+                    socket.emit("updateStageParameters", stageParameters);
+                });
+            }
+
+            openDisplays = () => {
+                displays.forEach((item) => {
+                    const elem = document.getElementById(item.id);
+                    if (elem) {
+                        elem.remove();
+                    }
+                });
+                showSelector = document.getElementById("displaySelect");
+                showSelector.style.display = "flex";
+
+                displays.forEach((item) => {
+                    let displayElement = document.createElement("span");
+                    let divider = document.createElement("div");
+                    displayElement.className = "selector-name";
+                    divider.className = "divider";
+                    displayElement.id = item.id;
+                    displayElement.innerText = item.name;
+                    displayElement.appendChild(divider);
+                    showSelector.appendChild(displayElement);
+
+                    const proccessClickDisplays = () => {
+                        displays.forEach((item) => {
+                            const elem = document.getElementById(item.id);
+                            if (elem) {
+                                elem.remove();
+                                showSelector.style.display = "none";
+                            }
+                        });
+                        displayElement.removeEventListener("click", proccessClickDisplays);
+                        console.log("selected display name", item.name);
+                        console.log("selected display id", item.id);
+                    };
+
+                    displayElement.addEventListener("click", proccessClickDisplays);
+                });
+            };
+            // openAvatars = (seatId) => {
+            //     avatars.forEach((item) => {
+            //         const elem = document.getElementById(item.id);
+            //         if (elem) {
+            //             elem.remove();
+            //         }
+            //     });
+            //     showAvatarSelector = document.getElementById("avatarSelect");
+            //     showAvatarSelector.style.display = "flex";
+            //     avatarButtonWrapper = document.getElementById(seatId);
+            //     offText = document.getElementById("off-text");
+            //     avatarButtonWrapper.classList.toggle("avatar-button-on");
+            //     offText.style.display = "none";
+            //
+            //     avatars.forEach((item) => {
+            //         let avatarElement = document.createElement("span");
+            //         let divider = document.createElement("div");
+            //
+            //         avatarElement.className = "selector-name";
+            //         divider.className = "divider";
+            //         avatarElement.id = item.id;
+            //         avatarElement.innerText = item.name;
+            //         avatarElement.appendChild(divider);
+            //         showAvatarSelector.appendChild(avatarElement);
+            //
+            //         const proccessClick = () => {
+            //             avatarNumber = item.name;
+            //             let avatarSelectedNumber = document.createElement("span");
+            //             avatarSelectedNumber.innerHTML = avatarNumber;
+            //             avatarButtonWrapper.appendChild(avatarSelectedNumber);
+            //             console.log("selected avatar number: " + avatarNumber);
+            //             console.log("selected seatId", seatId);
+            //             avatarElement.removeEventListener("click", proccessClick);
+            //             showAvatarSelector.style.display = "none";
+            //             avatars.forEach((item) => {
+            //                 const elem = document.getElementById(item.id);
+            //                 if (elem) {
+            //                     elem.remove();
+            //                 }
+            //             });
+            //         };
+            //         avatarElement.addEventListener("click", proccessClick);
+            //     });
+            // };
+        });
+    </script>
 </body>
 </html>
