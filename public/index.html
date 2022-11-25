@@ -15,249 +15,157 @@
 <body>
     <div class="content-container">
         <div class="change-screen-button-wrapper">
-            <span>Change Screen</span>
+            <span class="screen-title">Change Screen: </span>
+            <select class="screen-select"></select>
         </div>
         <div class="selector" id="displaySelect"></div>
         <div class="avatar-list-wrapper" id="avatarList">
-            <div class="avatar-button one" id="seat01">
-                <span>Off</span>
+            <div class="chair-button one chair-button-on" seat="seat01">
+                <span>On</span>
             </div>
-            <div class="avatar-button two" id="seat02">
-                <span>Off</span>
+            <div class="chair-button two chair-button-on" seat="seat02">
+                <span>On</span>
             </div>
-            <div class="avatar-button three" id="seat03">
-                <span>Off</span>
+            <div class="chair-button three chair-button-on" seat="seat03">
+                <span>On</span>
             </div>
-            <div class="avatar-button four" id="seatCenter">
-                <span>Off</span>
+            <div class="chair-button four chair-button-on" seat="seatCenter">
+                <span>On</span>
             </div>
-            <div class="avatar-button five" id="seat04">
-                <span>Off</span>
+            <div class="chair-button five chair-button-on" seat="seat04">
+                <span>On</span>
             </div>
-            <div class="avatar-button six" id="seat05">
-                <span>Off</span>
+            <div class="chair-button six chair-button-on" seat="seat05">
+                <span>On</span>
             </div>
-            <div class="avatar-button seven" id="seat06">
-                <span>Off</span>
+            <div class="chair-button seven chair-button-on" seat="seat06">
+                <span>On</span>
             </div>
         </div>
-        <div class="selector" id="avatarSelect">
-            <span class="turn-on-span">On
-              <div class="divider"></div>
-            </span>
+        <div class="avatar-template-list-wrapper" id="avatarTemplateList">
+            <div class="avatar-select-block">
+                <select class="avatar-select" seat="seat01"></select>
+            </div>
+            <div class="avatar-select-block">
+                <select class="avatar-select" seat="seat02"></select>
+            </div>
+            <div class="avatar-select-block">
+                <select class="avatar-select" seat="seat03"></select>
+            </div>
+            <div class="avatar-select-block">
+                <select class="avatar-select" seat="seatCenter"></select>
+            </div>
+            <div class="avatar-select-block">
+                <select class="avatar-select" seat="seat04"></select>
+            </div>
+            <div class="avatar-select-block">
+                <select class="avatar-select" seat="seat05"></select>
+            </div>
+            <div class="avatar-select-block">
+                <select class="avatar-select" seat="seat06"></select>
+            </div>
         </div>
     </div>
     <script>
         jQuery(document).ready(function () {
-            const socket = io.connect("https://digital-twins-backend.eagdxb.online");
-            const avatars = [
-                {
-                    name: "Avatar 01",
-                    id: 1,
-                },
-                {
-                    name: "Avatar 02",
-                    id: 2,
-                },
-                {
-                    name: "Avatar 03",
-                    id: 3,
-                },
-                {
-                    name: "Avatar 04",
-                    id: 4,
-                },
-                {
-                    name: "Avatar 05",
-                    id: 5,
-                },
-                {
-                    name: "Avatar 06",
-                    id: 6,
-                },
-                {
-                    name: "Avatar 07",
-                    id: 7,
-                },
-            ];
-            const displays = [
-                {
-                    name: "Display 01",
-                    id: 1,
-                },
-                {
-                    name: "Display 02",
-                    id: 2,
-                },
-                {
-                    name: "Display 03",
-                    id: 3,
-                },
-                {
-                    name: "Display 04",
-                    id: 4,
-                },
-                {
-                    name: "Display 05",
-                    id: 5,
-                },
-                {
-                    name: "Display 06",
-                    id: 6,
-                },
-                {
-                    name: "Display 07",
-                    id: 7,
-                },
-            ];
+            const socket = io.connect("http://localhost:8080");
+            const avatarTemplateList = ["Disabled", "Basic"];
+            const screenList = ["Screen 01", "Screen 02", "Screen 03", "Screen 04", "Screen 05", "Screen 06", "Screen 07"];
             const stageParameters = {
                 seatCenter: {
                     id: 0,
-                    avatarEnabled: false,
+                    avatarTemplate: "Disabled",
                     chairEnabled: true
                 },
                 seat01: {
                     id: 1,
-                    avatarEnabled: false,
+                    avatarTemplate: "Disabled",
                     chairEnabled: true
                 },
                 seat02: {
                     id: 2,
-                    avatarEnabled: false,
+                    avatarTemplate: "Disabled",
                     chairEnabled: true
                 },
                 seat03: {
                     id: 3,
-                    avatarEnabled: false,
+                    avatarTemplate: "Disabled",
                     chairEnabled: true
                 },
                 seat04: {
                     id: 4,
-                    avatarEnabled: false,
+                    avatarTemplate: "Disabled",
                     chairEnabled: true
                 },
                 seat05: {
                     id: 5,
-                    avatarEnabled: false,
+                    avatarTemplate: "Disabled",
                     chairEnabled: true
                 },
                 seat06: {
                     id: 6,
-                    avatarEnabled: false,
+                    avatarTemplate: "Disabled",
                     chairEnabled: true
                 },
                 screen: {
                     url: ""
+                },
+                customData: {
+
                 }
             };
 
-            jQuery('.change-screen-button-wrapper').on('click', function () {
-                console.log("Click screen change");
-                openDisplays();
+            let elementScreenSelect = $('.screen-select');
+            let elementScreenTitle = $('.screen-title');
+
+
+            let selectedScreen = elementScreenSelect.val();
+            elementScreenTitle.text(screenList[0]);
+            stageParameters.screen.url = selectedScreen;
+
+            elementScreenSelect.on('change', () => {
+                selectedScreen = elementScreenSelect.val();
+                elementScreenTitle.text(selectedScreen);
+                stageParameters.screen.url = selectedScreen;
+                socket.emit("updateStageParameters", stageParameters);
             });
 
-            for (let element of $('.avatar-button')) {
-                let avatarButton = jQuery(element);
-
-                if (stageParameters[avatarButton.attr('id')].chairEnabled) {
-                    avatarButton.addClass("avatar-button-on")
-                }
-
+            for (let element of $('.chair-button')) {
                 jQuery(element).on('click', function() {
-                    let seatId = jQuery(this).attr('id');
+                    let chairElement = jQuery(this);
 
-                    if (stageParameters[seatId].chairEnabled) {
-                        stageParameters[seatId].chairEnabled = false;
-                        jQuery(this).removeClass("avatar-button-on")
+                    if (stageParameters[chairElement.attr('seat')].chairEnabled) {
+                        stageParameters[chairElement.attr('seat')].chairEnabled = false;
+                        jQuery(this).removeClass("chair-button-on");
+                        chairElement.text("Off");
                     } else {
-                        stageParameters[seatId].chairEnabled = true;
-                        jQuery(this).addClass("avatar-button-on")
+                        stageParameters[chairElement.attr('seat')].chairEnabled = true;
+                        jQuery(this).addClass("chair-button-on");
+                        chairElement.text("On");
                     }
 
+                    console.log(stageParameters);
+                });
+            }
+
+            for (let element of $('.avatar-select')) {
+                for (let avatarTemplate of avatarTemplateList) {
+                    element.append(new Option(avatarTemplate));
+                }
+                jQuery(element).on('change', function() {
+                    let avatarElement = jQuery(this);
+
+                    stageParameters[avatarElement.attr('seat')].avatarTemplate =
+                        avatarElement.val();
+
+                    console.log(stageParameters);
                     socket.emit("updateStageParameters", stageParameters);
                 });
             }
 
-            openDisplays = () => {
-                displays.forEach((item) => {
-                    const elem = document.getElementById(item.id);
-                    if (elem) {
-                        elem.remove();
-                    }
-                });
-                showSelector = document.getElementById("displaySelect");
-                showSelector.style.display = "flex";
-
-                displays.forEach((item) => {
-                    let displayElement = document.createElement("span");
-                    let divider = document.createElement("div");
-                    displayElement.className = "selector-name";
-                    divider.className = "divider";
-                    displayElement.id = item.id;
-                    displayElement.innerText = item.name;
-                    displayElement.appendChild(divider);
-                    showSelector.appendChild(displayElement);
-
-                    const proccessClickDisplays = () => {
-                        displays.forEach((item) => {
-                            const elem = document.getElementById(item.id);
-                            if (elem) {
-                                elem.remove();
-                                showSelector.style.display = "none";
-                            }
-                        });
-                        displayElement.removeEventListener("click", proccessClickDisplays);
-                        console.log("selected display name", item.name);
-                        console.log("selected display id", item.id);
-                    };
-
-                    displayElement.addEventListener("click", proccessClickDisplays);
-                });
-            };
-            // openAvatars = (seatId) => {
-            //     avatars.forEach((item) => {
-            //         const elem = document.getElementById(item.id);
-            //         if (elem) {
-            //             elem.remove();
-            //         }
-            //     });
-            //     showAvatarSelector = document.getElementById("avatarSelect");
-            //     showAvatarSelector.style.display = "flex";
-            //     avatarButtonWrapper = document.getElementById(seatId);
-            //     offText = document.getElementById("off-text");
-            //     avatarButtonWrapper.classList.toggle("avatar-button-on");
-            //     offText.style.display = "none";
-            //
-            //     avatars.forEach((item) => {
-            //         let avatarElement = document.createElement("span");
-            //         let divider = document.createElement("div");
-            //
-            //         avatarElement.className = "selector-name";
-            //         divider.className = "divider";
-            //         avatarElement.id = item.id;
-            //         avatarElement.innerText = item.name;
-            //         avatarElement.appendChild(divider);
-            //         showAvatarSelector.appendChild(avatarElement);
-            //
-            //         const proccessClick = () => {
-            //             avatarNumber = item.name;
-            //             let avatarSelectedNumber = document.createElement("span");
-            //             avatarSelectedNumber.innerHTML = avatarNumber;
-            //             avatarButtonWrapper.appendChild(avatarSelectedNumber);
-            //             console.log("selected avatar number: " + avatarNumber);
-            //             console.log("selected seatId", seatId);
-            //             avatarElement.removeEventListener("click", proccessClick);
-            //             showAvatarSelector.style.display = "none";
-            //             avatars.forEach((item) => {
-            //                 const elem = document.getElementById(item.id);
-            //                 if (elem) {
-            //                     elem.remove();
-            //                 }
-            //             });
-            //         };
-            //         avatarElement.addEventListener("click", proccessClick);
-            //     });
-            // };
+            for (let screenName of screenList) {
+                elementScreenSelect.append(new Option(screenName));
+            }
         });
     </script>
 </body>

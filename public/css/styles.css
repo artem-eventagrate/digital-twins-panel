@@ -4,6 +4,7 @@ body {
     height: 100vh;
 }
 
+
 .content-container {
     height: 50%;
     width: 100%;
@@ -14,29 +15,35 @@ body {
 }
 
 .change-screen-button-wrapper {
+    display: flex;
+    justify-content: center;
     width: 600px;
     text-align: center;
     background: #d9d9d9;
-    padding: 12px 0 12px 0;
+    padding: 12px;
     font-family: sans-serif;
     font-weight: 500;
     font-size: 22px;
     cursor: pointer;
 }
 
-.avatar-list-wrapper {
-    width: 600px;
-    height: 95px;
+.screen-title {
     display: flex;
-    flex-direction: row;
-    gap: 2px;
-    margin-top: 64px;
+    flex: 1;
+    text-align: center;
+}
+.screen-select {
+    background: white;
+    display: flex;
+    border: none;
+    flex: 2;
+    width: 90%;
 }
 
-.avatar-button {
-    background: #727272;
-    width: 90px;
-    height: 90px;
+.avatar-select-block {
+    background: #d9d9d9;
+    width: 160px;
+    height: 48px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -46,7 +53,63 @@ body {
     font-weight: 600;
 }
 
-.avatar-button-on {
+.avatar-select {
+    margin: 8px;
+    background: white;
+    display: flex;
+    border: none;
+    flex: 1;
+    text-align: center;
+    width: 90%;
+}
+
+.avatar-list-wrapper {
+    width: 75%;
+    height: 95px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2px;
+    margin-top: 64px;
+}
+
+.avatar-template-list-wrapper {
+    width: 75%;
+    height: 95px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2px;
+    margin-top: 8px;
+}
+
+.chair-button {
+    background: #727272;
+    width: 160px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+    font-weight: 600;
+}
+
+.avatar-template-button {
+    background: #727272;
+    width: 112px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+    font-weight: 600;
+}
+
+.chair-button-on {
     background-color: #d9d9d9;
 }
 

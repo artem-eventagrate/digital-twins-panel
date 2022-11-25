@@ -2,7 +2,7 @@ const express = require('express'),
     app = express(),
     path = require('path');
 
-let serverPort = 8080;
+let serverPort = 8082;
 
 app.use(express.static('public'))
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
