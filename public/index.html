@@ -68,50 +68,68 @@
     </div>
     <script>
         jQuery(document).ready(function () {
-            const socket = io.connect("http://localhost:8080");
-            const avatarTemplateList = ["Disabled", "Basic"];
-            const screenList = ["Screen 01", "Screen 02", "Screen 03", "Screen 04", "Screen 05", "Screen 06", "Screen 07"];
+            // const socket = io.connect("http://localhost:8080");
+            const socket = io.connect("http://ec2-157-175-39-249.me-south-1.compute.amazonaws.com");
+            const avatarTemplateList = ["Disabled", "Avatar00", "Avatar01", "Avatar02", "Avatar03",
+                "Avatar04", "Avatar05", "Avatar06", "Avatar04", "Avatar05", "Avatar06", "Avatar07",
+                "Avatar08", "Avatar09", "Avatar10", "Avatar11", "Avatar12", "Avatar13", "Avatar14",
+                "Avatar15", "Avatar16", "Avatar17", "Avatar18", "Avatar19", "Avatar20", "Avatar21",
+                "Avatar22", "Avatar23", "Avatar24", "Avatar26", "Avatar27", "Avatar28", "Avatar29",
+                "Avatar30", "Avatar31", "Avatar32", "Avatar33", "Avatar34", "Avatar35"];
+            const screenList = ["Screen 01", "Screen 02", "Screen 03", "Screen 04", "Screen 05", "Screen 06", "Screen 07", "Screen 08", "Screen 09"];
+            const screenIdMap = new Map();
+            screenIdMap.set("Screen 01", 0);
+            screenIdMap.set("Screen 02", 1);
+            screenIdMap.set("Screen 03", 2);
+            screenIdMap.set("Screen 04", 3);
+            screenIdMap.set("Screen 05", 4);
+            screenIdMap.set("Screen 06", 5);
+            screenIdMap.set("Screen 07", 6);
+            screenIdMap.set("Screen 08", 7);
+            screenIdMap.set("Screen 09", 8);
+
             const stageParameters = {
-                seatCenter: {
-                    id: 0,
-                    avatarTemplate: "Disabled",
-                    chairEnabled: true
-                },
-                seat01: {
-                    id: 1,
-                    avatarTemplate: "Disabled",
-                    chairEnabled: true
-                },
-                seat02: {
-                    id: 2,
-                    avatarTemplate: "Disabled",
-                    chairEnabled: true
-                },
-                seat03: {
-                    id: 3,
-                    avatarTemplate: "Disabled",
-                    chairEnabled: true
-                },
-                seat04: {
-                    id: 4,
-                    avatarTemplate: "Disabled",
-                    chairEnabled: true
-                },
-                seat05: {
-                    id: 5,
-                    avatarTemplate: "Disabled",
-                    chairEnabled: true
-                },
-                seat06: {
-                    id: 6,
-                    avatarTemplate: "Disabled",
-                    chairEnabled: true
+                seats: {
+                    seatCenter: {
+                        id: 0,
+                        avatarTemplate: "Disabled",
+                        chairEnabled: true
+                    },
+                    seat01: {
+                        id: 1,
+                        avatarTemplate: "Disabled",
+                        chairEnabled: true
+                    },
+                    seat02: {
+                        id: 2,
+                        avatarTemplate: "Disabled",
+                        chairEnabled: true
+                    },
+                    seat03: {
+                        id: 3,
+                        avatarTemplate: "Disabled",
+                        chairEnabled: true
+                    },
+                    seat04: {
+                        id: 4,
+                        avatarTemplate: "Disabled",
+                        chairEnabled: true
+                    },
+                    seat05: {
+                        id: 5,
+                        avatarTemplate: "Disabled",
+                        chairEnabled: true
+                    },
+                    seat06: {
+                        id: 6,
+                        avatarTemplate: "Disabled",
+                        chairEnabled: true
+                    }
                 },
                 screen: {
-                    url: ""
+                    id: 0
                 },
                 customData: {
-
                 }
             };
 
@@ -126,7 +144,7 @@
             elementScreenSelect.on('change', () => {
                 selectedScreen = elementScreenSelect.val();
                 elementScreenTitle.text(selectedScreen);
-                stageParameters.screen.url = selectedScreen;
+                stageParameters.screen.id = screenIdMap.get(selectedScreen);
                 socket.emit("updateStageParameters", stageParameters);
             });
 
@@ -134,17 +152,17 @@
                 jQuery(element).on('click', function() {
                     let chairElement = jQuery(this);
 
-                    if (stageParameters[chairElement.attr('seat')].chairEnabled) {
-                        stageParameters[chairElement.attr('seat')].chairEnabled = false;
+                    if (stageParameters.seats[chairElement.attr('seat')].chairEnabled) {
+                        stageParameters.seats[chairElement.attr('seat')].chairEnabled = false;
                         jQuery(this).removeClass("chair-button-on");
                         chairElement.text("Off");
                     } else {
-                        stageParameters[chairElement.attr('seat')].chairEnabled = true;
+                        stageParameters.seats[chairElement.attr('seat')].chairEnabled = true;
                         jQuery(this).addClass("chair-button-on");
                         chairElement.text("On");
                     }
 
-                    console.log(stageParameters);
+                    socket.emit("updateStageParameters", stageParameters);
                 });
             }
 
@@ -155,13 +173,17 @@
                 jQuery(element).on('change', function() {
                     let avatarElement = jQuery(this);
 
-                    stageParameters[avatarElement.attr('seat')].avatarTemplate =
+                    stageParameters.seats[avatarElement.attr('seat')].avatarTemplate =
                         avatarElement.val();
 
                     console.log(stageParameters);
                     socket.emit("updateStageParameters", stageParameters);
                 });
             }
+
+            $('.avatar-select').on('click', () => {
+                console.log("click");
+            });
 
             for (let screenName of screenList) {
                 elementScreenSelect.append(new Option(screenName));
