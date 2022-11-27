@@ -65,6 +65,29 @@
                 <select class="avatar-select" seat="seat06"></select>
             </div>
         </div>
+<!--        <div class="movement-controls-wrapper" id="movementControls">-->
+<!--            <div class="movement-button movement-button-on" seat="movement01">-->
+<!--                <span>On</span>-->
+<!--            </div>-->
+<!--            <div class="movement-button movement-button-on" seat="movement02">-->
+<!--                <span>On</span>-->
+<!--            </div>-->
+<!--            <div class="movement-button movement-button-on" seat="movement03">-->
+<!--                <span>On</span>-->
+<!--            </div>-->
+<!--            <div class="movement-button movement-button-on" seat="movementCenter">-->
+<!--                <span>On</span>-->
+<!--            </div>-->
+<!--            <div class="movement-button movement-button-on" seat="movement04">-->
+<!--                <span>On</span>-->
+<!--            </div>-->
+<!--            <div class="movement-button movement-button-on" seat="movement05">-->
+<!--                <span>On</span>-->
+<!--            </div>-->
+<!--            <div class="movement-button movement-button-on" seat="movement06">-->
+<!--                <span>On</span>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
     <script>
         jQuery(document).ready(function () {
@@ -73,7 +96,7 @@
             socket.emit("connectAdminPanel");
             const avatarTemplateList = ["Disabled", "AnneBiging", "AnthonyCapuano", "ClaytonReid", "CraigheadKelly",
                 "ElenaKountoura", "EleniGiokos", "FawazFarooqui", "FedericoGonzalez", "GibranChapur", "GregOHara", "HadleyGamble",
-                "HashilAlMahrouqi", "HEAhmedIssa", "HEFatimaAlSairafi", "HEKhalidAlFalih", "HEMFaisalAlibrahim", "HEVassilisKikilias", "Avatar17",
+                "HashilAlMahrouqi", "HEAhmedIssa", "HEFatimaAlSairafi", "HEKhalidAlFalih", "HEMFaisalAlibrahim", "HEVassilisKikilias",
                 "HRHTurkibinTalal", "JDOHara", "JohnDefterios", "JohnPagano", "ManEurop", "ManfrediLefebvre", "MariaEsperanza",
                 "MarkKeam", "NadhmiAlNasr", "NicolasHuss", "PansyHO", "PierfrancescoVago", "PrincessHaifaAlSaud", "QusaiAlFakhri",
                 "ReyesMaroto", "RichardQuest", "ZeinabBadawi", "ZurabPololikashvili"];
@@ -94,36 +117,43 @@
                     seatCenter: {
                         id: 0,
                         avatarTemplate: "Disabled",
+                        movingEnabled: true,
                         chairEnabled: true
                     },
                     seat01: {
                         id: 1,
                         avatarTemplate: "Disabled",
+                        movingEnabled: true,
                         chairEnabled: true
                     },
                     seat02: {
                         id: 2,
                         avatarTemplate: "Disabled",
+                        movingEnabled: true,
                         chairEnabled: true
                     },
                     seat03: {
                         id: 3,
                         avatarTemplate: "Disabled",
+                        movingEnabled: true,
                         chairEnabled: true
                     },
                     seat04: {
                         id: 4,
                         avatarTemplate: "Disabled",
+                        movingEnabled: true,
                         chairEnabled: true
                     },
                     seat05: {
                         id: 5,
                         avatarTemplate: "Disabled",
+                        movingEnabled: true,
                         chairEnabled: true
                     },
                     seat06: {
                         id: 6,
                         avatarTemplate: "Disabled",
+                        movingEnabled: true,
                         chairEnabled: true
                     }
                 },
