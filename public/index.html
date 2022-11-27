@@ -70,12 +70,13 @@
         jQuery(document).ready(function () {
             // const socket = io.connect("http://localhost:8080");
             const socket = io.connect("http://ec2-157-175-39-249.me-south-1.compute.amazonaws.com:8080");
-            const avatarTemplateList = ["Disabled", "Avatar00", "Avatar01", "Avatar02", "Avatar03",
-                "Avatar04", "Avatar05", "Avatar06", "Avatar04", "Avatar05", "Avatar06", "Avatar07",
-                "Avatar08", "Avatar09", "Avatar10", "Avatar11", "Avatar12", "Avatar13", "Avatar14",
-                "Avatar15", "Avatar16", "Avatar17", "Avatar18", "Avatar19", "Avatar20", "Avatar21",
-                "Avatar22", "Avatar23", "Avatar24", "Avatar26", "Avatar27", "Avatar28", "Avatar29",
-                "Avatar30", "Avatar31", "Avatar32", "Avatar33", "Avatar34", "Avatar35"];
+            socket.emit("connectAdminPanel");
+            const avatarTemplateList = ["Disabled", "AnneBiging", "AnthonyCapuano", "ClaytonReid", "CraigheadKelly",
+                "ElenaKountoura", "EleniGiokos", "FawazFarooqui", "FedericoGonzalez", "GibranChapur", "GregOHara", "HadleyGamble",
+                "HashilAlMahrouqi", "HEAhmedIssa", "HEFatimaAlSairafi", "HEKhalidAlFalih", "HEMFaisalAlibrahim", "HEVassilisKikilias", "Avatar17",
+                "HRHTurkibinTalal", "JDOHara", "JohnDefterios", "JohnPagano", "ManEurop", "ManfrediLefebvre", "MariaEsperanza",
+                "MarkKeam", "NadhmiAlNasr", "NicolasHuss", "PansyHO", "PierfrancescoVago", "PrincessHaifaAlSaud", "QusaiAlFakhri",
+                "ReyesMaroto", "RichardQuest", "ZeinabBadawi", "ZurabPololikashvili"];
             const screenList = ["Screen 01", "Screen 02", "Screen 03", "Screen 04", "Screen 05", "Screen 06", "Screen 07", "Screen 08", "Screen 09"];
             const screenIdMap = new Map();
             screenIdMap.set("Screen 01", 0);
@@ -173,22 +174,38 @@
                 jQuery(element).on('change', function() {
                     let avatarElement = jQuery(this);
 
-                    stageParameters.seats[avatarElement.attr('seat')].avatarTemplate =
-                        avatarElement.val();
-
-                    console.log(stageParameters);
-                    socket.emit("updateStageParameters", stageParameters);
+                    if (compareWithSelected(avatarElement.val(), avatarElement.attr("seat"))) {
+                        stageParameters.seats[avatarElement.attr('seat')].avatarTemplate =
+                            avatarElement.val();
+                            console.log(stageParameters);
+                            socket.emit("updateStageParameters", stageParameters);
+                    } else {
+                        avatarElement.val(stageParameters.seats[avatarElement.attr('seat')].avatarTemplate);
+                    }
                 });
             }
-
-            $('.avatar-select').on('click', () => {
-                console.log("click");
-            });
 
             for (let screenName of screenList) {
                 elementScreenSelect.append(new Option(screenName));
             }
         });
+
+        function compareWithSelected(value, currentSeat) {
+            let result = true;
+
+            for (let element of $('.avatar-select')) {
+                let selectElement = $(element);
+
+                if (selectElement.attr("seat") !== currentSeat) {
+                    if (value === selectElement.val() && value !== "Disabled") {
+                        alert("This is already selected!");
+                        result = false;
+                    }
+                }
+            }
+
+            return result;
+        }
     </script>
 </body>
 </html>
