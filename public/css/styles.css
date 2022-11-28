@@ -83,6 +83,33 @@ body {
     margin-top: 8px;
 }
 
+.movement-controls-wrapper {
+    width: 75%;
+    height: 95px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2px;
+    margin-top: 64px;
+}
+
+.movement-button {
+    background: rgb(192, 32, 32);
+    width: 160px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+    font-weight: 600;
+}
+
+.movement-button-on {
+    background: rgb(32, 192, 32);
+}
+
 .chair-button {
     background: #727272;
     width: 160px;

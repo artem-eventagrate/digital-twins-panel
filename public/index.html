@@ -65,35 +65,36 @@
                 <select class="avatar-select" seat="seat06"></select>
             </div>
         </div>
-<!--        <div class="movement-controls-wrapper" id="movementControls">-->
-<!--            <div class="movement-button movement-button-on" seat="movement01">-->
-<!--                <span>On</span>-->
-<!--            </div>-->
-<!--            <div class="movement-button movement-button-on" seat="movement02">-->
-<!--                <span>On</span>-->
-<!--            </div>-->
-<!--            <div class="movement-button movement-button-on" seat="movement03">-->
-<!--                <span>On</span>-->
-<!--            </div>-->
-<!--            <div class="movement-button movement-button-on" seat="movementCenter">-->
-<!--                <span>On</span>-->
-<!--            </div>-->
-<!--            <div class="movement-button movement-button-on" seat="movement04">-->
-<!--                <span>On</span>-->
-<!--            </div>-->
-<!--            <div class="movement-button movement-button-on" seat="movement05">-->
-<!--                <span>On</span>-->
-<!--            </div>-->
-<!--            <div class="movement-button movement-button-on" seat="movement06">-->
-<!--                <span>On</span>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="movement-controls-wrapper" id="movementControls">
+            <div class="movement-button movement-button-on" seat="seat01">
+                <span>On</span>
+            </div>
+            <div class="movement-button movement-button-on" seat="seat02">
+                <span>On</span>
+            </div>
+            <div class="movement-button movement-button-on" seat="seat03">
+                <span>On</span>
+            </div>
+            <div class="movement-button movement-button-on" seat="seatCenter">
+                <span>On</span>
+            </div>
+            <div class="movement-button movement-button-on" seat="seat04">
+                <span>On</span>
+            </div>
+            <div class="movement-button movement-button-on" seat="seat05">
+                <span>On</span>
+            </div>
+            <div class="movement-button movement-button-on" seat="seat06">
+                <span>On</span>
+            </div>
+        </div>
     </div>
     <script>
         jQuery(document).ready(function () {
             // const socket = io.connect("http://localhost:8080");
             const socket = io.connect("http://ec2-157-175-39-249.me-south-1.compute.amazonaws.com:8080");
             socket.emit("connectAdminPanel");
+
             const avatarTemplateList = ["Disabled", "AnneBiging", "AnthonyCapuano", "ClaytonReid", "CraigheadKelly",
                 "ElenaKountoura", "EleniGiokos", "FawazFarooqui", "FedericoGonzalez", "GibranChapur", "GregOHara", "HadleyGamble",
                 "HashilAlMahrouqi", "HEAhmedIssa", "HEFatimaAlSairafi", "HEKhalidAlFalih", "HEMFaisalAlibrahim", "HEVassilisKikilias",
@@ -213,6 +214,25 @@
                     } else {
                         avatarElement.val(stageParameters.seats[avatarElement.attr('seat')].avatarTemplate);
                     }
+                });
+            }
+
+            for (let element of $('.movement-button')) {
+                jQuery(element).on('click', function() {
+                    let movementElement = jQuery(this);
+
+                    if (stageParameters.seats[movementElement.attr('seat')].movingEnabled) {
+                        stageParameters.seats[movementElement.attr('seat')].movingEnabled = false;
+                        jQuery(this).removeClass("movement-button-on");
+                        movementElement.text("Off");
+                    } else {
+                        stageParameters.seats[movementElement.attr('seat')].movingEnabled = true;
+                        jQuery(this).addClass("movement-button-on");
+                        movementElement.text("On");
+                    }
+
+                    console.log(stageParameters);
+                    socket.emit("updateStageParameters", stageParameters);
                 });
             }
 
